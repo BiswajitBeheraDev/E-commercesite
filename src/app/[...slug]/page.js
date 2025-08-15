@@ -1,7 +1,5 @@
-"use client";
-
 import { Suspense } from "react";
-import NotFoundContent from "./Myclientcomponet";
+import NotFoundContent from "./Myclientcomponent";
 
 export default function NotFoundPage() {
   return (
