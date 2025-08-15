@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white mt-10">
@@ -7,11 +9,17 @@ export default function Footer() {
         <p className="text-sm">&copy; {new Date().getFullYear()} MyStore. All rights reserved.</p>
 
         <div className="flex space-x-4 mt-2 md:mt-0">
-          <a href="/about" className="text-sm hover:underline">About</a>
-          <a href="/contact" className="text-sm hover:underline">Contact</a>
-          <a href="/privacy" className="text-sm hover:underline">Privacy</a>
+          <Link href="/about" className="text-sm hover:underline">
+            About
+          </Link>
+          <Link href="/contact" className="text-sm hover:underline">
+            Contact
+          </Link>
+          <Link href="/privacy" className="text-sm hover:underline">
+            Privacy
+          </Link>
         </div>
       </div>
     </footer>
-  )
+  );
 }
