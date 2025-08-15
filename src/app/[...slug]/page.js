@@ -1,14 +1,12 @@
+"use client";
 
-import { Suspense } from 'react';
-import MyClientComponent from './Myclientcomponet'; 
+import { Suspense } from "react";
+import NotFoundContent from "./Myclientcomponet";
 
-export default function CatchAllPage() {
+export default function NotFoundPage() {
   return (
-    <div>
-      <h1>Dynamic Content Page</h1>
-      <Suspense fallback={<div>Loading...</div>}>
-        <MyClientComponent />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <NotFoundContent />
+    </Suspense>
   );
 }
