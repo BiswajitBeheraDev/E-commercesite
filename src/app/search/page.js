@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import products from '@/data/product'; 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
@@ -31,7 +32,7 @@ export default function SearchPage() {
           {filteredProducts.map((product) => (
             <Link key={product.id} href={`/product/${product.id}`}>
               <div className="border p-4 rounded hover:shadow-md transition">
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
                   width={300}
