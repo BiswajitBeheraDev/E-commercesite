@@ -1,18 +1,24 @@
-'use client';
+// This can be a Server Component
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation"; 
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function MyClientComponent() {
-  const searchParams = useSearchParams();
-  const errorCode = searchParams.get("error");
+// This is just a placeholder example
+export default function BlogPostPage({ params }) {
+  const { slug } = params;
+
+  // You would fetch blog post data here based on the slug
+  const blogPost = null; // Replace with actual data fetching
+
+  // If the blog post is not found, show the default 404 page
+  if (!blogPost) {
+    notFound();
+  }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <h1>404 - Page Not Found</h1>
-        {errorCode && <p>Error Code: {errorCode}</p>}
-      </div>
-    </Suspense>
+    <div>
+      <h1 style={{ fontSize: '2rem' }}>{blogPost.title}</h1>
+      <p>{blogPost.content}</p>
+    </div>
   );
 }
