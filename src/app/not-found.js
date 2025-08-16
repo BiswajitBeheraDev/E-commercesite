@@ -1,4 +1,4 @@
-'use client'; // This must be at the top of the file
+'use client'; // Ye line sabse upar honi chahiye
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
