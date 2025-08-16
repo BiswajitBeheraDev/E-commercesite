@@ -1,10 +1,10 @@
-export default function MyClientComponent({ searchParams }) {
-  const errorCode = searchParams?.error;
+import { Suspense } from "react";
+import MyClientComponent from "./MyClientComponent";
 
+export default function NotFoundPage() {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>404 - Page Not Found</h1>
-      {errorCode && <p>Error Code: {errorCode}</p>}
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <MyClientComponent />
+    </Suspense>
   );
 }
