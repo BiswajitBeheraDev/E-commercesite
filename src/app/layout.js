@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header"; 
+import HeaderContent from "@/components/HeaderContent"; 
 import { CartProvider } from "@/context/cartcontext";
 import Footer from "@/components/Footer";
 
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <CartProvider>
-        <Header/>
+        <HeaderContent/>
             <main className="flex-grow">
             {children}
           </main>
