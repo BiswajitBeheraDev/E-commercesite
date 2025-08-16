@@ -1,10 +1,18 @@
-import { Suspense } from "react";
-import MyClientComponent from "./MyClientComponent";
+'use client';
 
-export default function NotFoundPage() {
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation"; 
+
+export default function MyClientComponent() {
+  const searchParams = useSearchParams();
+  const errorCode = searchParams.get("error");
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <MyClientComponent />
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h1>404 - Page Not Found</h1>
+        {errorCode && <p>Error Code: {errorCode}</p>}
+      </div>
     </Suspense>
   );
 }
