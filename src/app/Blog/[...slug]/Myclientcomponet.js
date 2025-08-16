@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-function NotFoundContent() {
+function MyClientComponentInner() {
   const searchParams = useSearchParams();
   const errorCode = searchParams.get("error");
 
@@ -15,10 +15,10 @@ function NotFoundContent() {
   );
 }
 
-export default function NotFoundPage() {
+export default function MyClientComponent() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <NotFoundContent />
+      <MyClientComponentInner />
     </Suspense>
   );
 }

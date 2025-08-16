@@ -1,6 +1,5 @@
-export default async function NotFoundPage({ searchParams }) {
-  const params = await searchParams; // 
-  const errorCode = params?.error;
+export default function MyClientComponent({ searchParams }) {
+  const errorCode = searchParams?.error;
 
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
