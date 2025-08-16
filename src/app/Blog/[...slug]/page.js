@@ -1,21 +1,15 @@
-// // app/blog/[slug]/page.js (example path)
-// import { notFound } from "next/navigation";
+"use client";
 
-// export default function BlogPostPage({ params }) {
-//   const { slug } = params;
+import { useSearchParams } from "next/navigation";
 
-//   // Normally yaha tum database ya API call karoge
-//   // Example ke liye dummy:
-//   const blogPost = null; // <-- Replace with real fetch
+export default function BlogPostContent({ slug }) {
+  const searchParams = useSearchParams();
+  const highlight = searchParams.get("highlight");
 
-//   if (!blogPost) {
-//     notFound(); // Next.js ko custom 404 page dikhane ko bolta hai
-//   }
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <h1 style={{ fontSize: "2rem" }}>{blogPost.title}</h1>
-//       <p>{blogPost.content}</p>
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <h1>Blog Post: {slug}</h1>
+      {highlight && <p>Highlight: {highlight}</p>}
+    </div>
+  );
+}
