@@ -1,28 +1,34 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import products from '@/data/product';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function SearchPageContent() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get('q') || '';
+export default function SearchPage({ params }) {
+  // ✅ unwrap params
+  const { term } = use(params);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    const search = query.toLowerCase();
+    if (!term) {
+      setFilteredProducts([]);
+      return;
+    }
+
+    const search = decodeURIComponent(term).toLowerCase();
     const results = products.filter((product) =>
       product.name.toLowerCase().includes(search)
     );
     setFilteredProducts(results);
-  }, [query]);
+  }, [term]);
 
   return (
     <div className="max-w-7xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">
-        Search Results for: <span className="text-blue-600">{query}</span>
+        Search Results for:{' '}
+        <span className="text-blue-600">{decodeURIComponent(term)}</span>
       </h1>
 
       {filteredProducts.length === 0 ? (

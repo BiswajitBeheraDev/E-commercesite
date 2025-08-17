@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import products from '@/data/product';
 import { useCart } from '@/context/cartcontext';
@@ -12,7 +12,6 @@ export default function HeaderContent() {
   const [storeOpen, setStoreOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const { cart } = useCart();
 
   const categories = [
@@ -31,20 +30,18 @@ export default function HeaderContent() {
     { label: 'Books', value: 'books' },
   ];
 
+  // Reset search box when navigating away from search page
   useEffect(() => {
-    if (pathname === '/search') {
-      const query = searchParams.get('q') || '';
-      setSearchTerm(query);
+    if (!pathname.startsWith('/search')) {
+      setSearchTerm('');
     }
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const trimmed = searchTerm.trim();
-    const currentQuery = searchParams.get('q') || '';
-
-    if (trimmed && trimmed !== currentQuery) {
-      router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    if (trimmed) {
+      router.push(`/search/${encodeURIComponent(trimmed)}`); // dynamic route
     }
     setSuggestions([]);
   };
@@ -53,7 +50,7 @@ export default function HeaderContent() {
     const value = e.target.value;
     setSearchTerm(value);
 
-    if (value.trim().length > 0 && pathname !== '/search') {
+    if (value.trim().length > 0 && !pathname.startsWith('/search')) {
       const filtered = products.filter((product) =>
         product.name.toLowerCase().includes(value.toLowerCase())
       );
@@ -66,18 +63,20 @@ export default function HeaderContent() {
   const handleSuggestionClick = (name) => {
     setSearchTerm(name);
     setSuggestions([]);
-    router.push(`/search?q=${encodeURIComponent(name)}`);
+    router.push(`/search/${encodeURIComponent(name)}`);
   };
 
   return (
     <header className="bg-sky-600 shadow-md relative z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 md:gap-0">
         <div className="flex items-center justify-between w-full md:space-x-6">
+          {/* Logo */}
           <div className="flex items-center space-x-2">
             <img src="/logo.jpg" alt="Logo" width={40} height={40} />
             <span className="text-white text-xl font-bold">MyShop</span>
           </div>
 
+          {/* Search (Desktop) */}
           <form
             onSubmit={handleSearch}
             className="hidden md:flex flex-col relative flex-1"
@@ -118,6 +117,8 @@ export default function HeaderContent() {
             <Link href="/" className="text-white hover:text-gray-200 transition">
               Home
             </Link>
+
+            {/* Store Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setStoreOpen(!storeOpen)}
@@ -141,7 +142,11 @@ export default function HeaderContent() {
               )}
             </div>
 
-            <Link href="/cart" className="relative text-white hover:text-gray-200 transition">
+            {/* Cart */}
+            <Link
+              href="/cart"
+              className="relative text-white hover:text-gray-200 transition"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -156,6 +161,7 @@ export default function HeaderContent() {
           </div>
         </div>
 
+        {/* Search (Mobile) */}
         <form
           onSubmit={handleSearch}
           className="flex flex-col relative md:hidden"
