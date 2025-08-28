@@ -11,6 +11,11 @@ export default function HeaderContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [storeOpen, setStoreOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [mobileStoreOpen, setMobileStoreOpen] = useState(false);
+  const [mobileProfileOpen, setMobileProfileOpen] = useState(false);
+  const [username, setUsername] = useState('');
+
   const router = useRouter();
   const pathname = usePathname();
   const { cart } = useCart();
@@ -32,9 +37,18 @@ export default function HeaderContent() {
   ];
 
   useEffect(() => {
+    const storedName = localStorage.getItem('username');
+    if (storedName) setUsername(storedName);
+  }, []);
+
+  useEffect(() => {
     if (!pathname.startsWith('/search')) {
       setSearchTerm('');
     }
+
+    // Close mobile dropdowns on route change
+    setMobileStoreOpen(false);
+    setMobileProfileOpen(false);
   }, [pathname]);
 
   const handleSearch = (e) => {
@@ -66,6 +80,12 @@ export default function HeaderContent() {
     router.push(`/search/${encodeURIComponent(name)}`);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('auth');
+    localStorage.removeItem('username');
+    router.push('/Login');
+  };
+
   return (
     <header className="bg-sky-600 shadow-md relative z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 md:gap-0">
@@ -76,7 +96,7 @@ export default function HeaderContent() {
             <span className="text-white text-xl font-bold">MyShop</span>
           </div>
 
-          {/* Search Bar (Desktop) */}
+          {/* Search (Desktop) */}
           <form
             onSubmit={handleSearch}
             className="hidden md:flex flex-col relative flex-1"
@@ -114,13 +134,13 @@ export default function HeaderContent() {
 
           {/* Right Menu */}
           <div className="flex items-center space-x-4 relative">
-            <Link href="/" className="text-white hover:text-gray-200 transition">
+            <Link href="/Herofile" className="text-white hover:text-gray-200 transition">
               Home
             </Link>
 
-            {/* Store Dropdown on Hover */}
+            {/* Store Dropdown (Desktop) */}
             <div
-              className="relative"
+              className="relative hidden md:block"
               onMouseEnter={() => setStoreOpen(true)}
               onMouseLeave={() => setStoreOpen(false)}
             >
@@ -143,7 +163,30 @@ export default function HeaderContent() {
               )}
             </div>
 
-            {/* Cart Icon */}
+            {/* Store Dropdown (Mobile) */}
+            <div className="md:hidden relative">
+              <button
+                onClick={() => setMobileStoreOpen(!mobileStoreOpen)}
+                className="text-white text-sm px-2 py-1 rounded hover:bg-sky-700"
+              >
+                Store ▾
+              </button>
+              {mobileStoreOpen && (
+                <div className="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.value}
+                      href={`/Catagory/${cat.value}`}
+                      className="block px-4 py-2 text-sm hover:bg-gray-100"
+                    >
+                      {cat.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Cart */}
             <Link
               href="/cart"
               className="relative text-white hover:text-gray-200 transition"
@@ -159,10 +202,66 @@ export default function HeaderContent() {
                 </span>
               )}
             </Link>
+
+            {/* Profile Dropdown (Desktop) */}
+            <div
+              className="relative hidden md:block"
+              onMouseEnter={() => setProfileOpen(true)}
+              onMouseLeave={() => setProfileOpen(false)}
+            >
+              <div className="flex items-center space-x-2 cursor-pointer text-white">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="Profile"
+                  width={30}
+                  height={30}
+                  className="rounded-full"
+                />
+                <span className="text-sm">{username}</span>
+              </div>
+
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Profile Dropdown (Mobile) */}
+            <div className="md:hidden relative">
+              <button
+                onClick={() => setMobileProfileOpen(!mobileProfileOpen)}
+                className="flex items-center text-white text-sm px-2 py-1 space-x-2"
+              >
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  alt="Profile"
+                  width={28}
+                  height={28}
+                  className="rounded-full"
+                />
+                <span>{username}</span>
+              </button>
+              {mobileProfileOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Search Bar (Mobile) */}
+        {/* Search (Mobile) */}
         <form
           onSubmit={handleSearch}
           className="flex flex-col relative md:hidden"
