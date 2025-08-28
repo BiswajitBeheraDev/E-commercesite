@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import products from '../data/product';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -21,7 +22,7 @@ const Slider = () => {
   <div className="w-full h-full flex flex-col md:flex-row">
     
     <div className="w-full md:w-1/2 h-1/2 md:h-full">
-           <img
+      <img
         src={currentProduct.image}
         alt={currentProduct.name}
         className="w-full h-full object-cover"

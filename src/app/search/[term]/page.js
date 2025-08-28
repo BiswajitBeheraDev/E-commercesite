@@ -3,10 +3,8 @@
 import { use, useEffect, useState } from 'react';
 import products from '@/data/product';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function SearchPage({ params }) {
-  // ✅ unwrap params
   const { term } = use(params);
 
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -38,7 +36,7 @@ export default function SearchPage({ params }) {
           {filteredProducts.map((product) => (
             <Link key={product.id} href={`/product/${product.id}`}>
               <div className="border p-4 rounded hover:shadow-md transition">
-                <Image
+                <img
                   src={product.image}
                   alt={product.name}
                   width={300}

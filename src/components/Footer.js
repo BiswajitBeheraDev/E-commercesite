@@ -9,10 +9,10 @@ export default function Footer() {
         <p className="text-sm">&copy; {new Date().getFullYear()} MyStore. All rights reserved.</p>
 
         <div className="flex space-x-4 mt-2 md:mt-0">
-          <Link href="/about" className="text-sm hover:underline">
+          <Link href="/About" className="text-sm hover:underline">
             About
           </Link>
-          <Link href="/contact" className="text-sm hover:underline">
+          <Link href="/Contact" className="text-sm hover:underline">
             Contact
           </Link>
           <Link href="/privacy" className="text-sm hover:underline">

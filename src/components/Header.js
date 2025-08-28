@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import products from '@/data/product';
 import { useCart } from '@/context/cartcontext';
+import Image from 'next/image';
 
 export default function HeaderContent() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -30,7 +31,6 @@ export default function HeaderContent() {
     { label: 'Books', value: 'books' },
   ];
 
-  // Reset search box when navigating away from search page
   useEffect(() => {
     if (!pathname.startsWith('/search')) {
       setSearchTerm('');
@@ -41,7 +41,7 @@ export default function HeaderContent() {
     e.preventDefault();
     const trimmed = searchTerm.trim();
     if (trimmed) {
-      router.push(`/search/${encodeURIComponent(trimmed)}`); // dynamic route
+      router.push(`/search/${encodeURIComponent(trimmed)}`);
     }
     setSuggestions([]);
   };
@@ -72,11 +72,11 @@ export default function HeaderContent() {
         <div className="flex items-center justify-between w-full md:space-x-6">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <img src="/logo.jpg" alt="Logo" width={40} height={40} />
+            <Image src="/logo.jpg" alt="Logo" width={40} height={40} />
             <span className="text-white text-xl font-bold">MyShop</span>
           </div>
 
-          {/* Search (Desktop) */}
+          {/* Search Bar (Desktop) */}
           <form
             onSubmit={handleSearch}
             className="hidden md:flex flex-col relative flex-1"
@@ -112,20 +112,22 @@ export default function HeaderContent() {
             )}
           </form>
 
-          {/* Navigation Links */}
+          {/* Right Menu */}
           <div className="flex items-center space-x-4 relative">
             <Link href="/" className="text-white hover:text-gray-200 transition">
               Home
             </Link>
 
-            {/* Store Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setStoreOpen(!storeOpen)}
-                className="text-white hover:text-gray-200 transition"
-              >
+            {/* Store Dropdown on Hover */}
+            <div
+              className="relative"
+              onMouseEnter={() => setStoreOpen(true)}
+              onMouseLeave={() => setStoreOpen(false)}
+            >
+              <button className="text-white hover:text-gray-200 transition">
                 Store ▾
               </button>
+
               {storeOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
                   {categories.map((cat) => (
@@ -133,7 +135,6 @@ export default function HeaderContent() {
                       key={cat.value}
                       href={`/Catagory/${cat.value}`}
                       className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      onClick={() => setStoreOpen(false)}
                     >
                       {cat.label}
                     </Link>
@@ -142,7 +143,7 @@ export default function HeaderContent() {
               )}
             </div>
 
-            {/* Cart */}
+            {/* Cart Icon */}
             <Link
               href="/cart"
               className="relative text-white hover:text-gray-200 transition"
@@ -161,7 +162,7 @@ export default function HeaderContent() {
           </div>
         </div>
 
-        {/* Search (Mobile) */}
+        {/* Search Bar (Mobile) */}
         <form
           onSubmit={handleSearch}
           className="flex flex-col relative md:hidden"

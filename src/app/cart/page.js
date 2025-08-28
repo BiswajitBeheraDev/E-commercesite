@@ -1,6 +1,7 @@
 'use client'
 
 import { useCart } from "@/context/cartcontext"
+import Link from "next/link"
 
 export default function CartPage() {
   const { cart, clearCart, removeFromCart } = useCart()
@@ -39,14 +40,12 @@ export default function CartPage() {
             Total: ${total.toFixed(2)}
           </div>
 
-          {/* Buttons */}
           <div className="mt-6 flex gap-4">
-            <button
-              onClick={() => alert("Proceeding to checkout...")}
+            <Link href={'/BuyNow'}
               className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
             >
               Buy Now
-            </button>
+            </Link>
             <button
               onClick={clearCart}
               className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
