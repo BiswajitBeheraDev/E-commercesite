@@ -4,6 +4,8 @@ import ConditionalHeader from "@/components/conditionalHeader";
 import ConditionalFooter from "@/components/Conditionalfooter";
 import { CartProvider } from "@/context/cartcontext";
 import { Suspense } from "react";
+import HeaderContent from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,12 +30,10 @@ export default function RootLayout({ children }) {
       >
         <CartProvider>
           <Suspense>
-            {/* <ConditionalHeader /> */}
-          </Suspense>
+            <HeaderContent/>
           <main className="flex-grow">{children}</main>
-          <Suspense>
-            {/* <ConditionalFooter /> */}
           </Suspense>
+          <Footer/>
         </CartProvider>
       </body>
     </html>
