@@ -28,11 +28,11 @@ export default function RootLayout({ children }) {
       >
         <CartProvider>
           <Suspense>
-            <ConditionalHeader />
+            {/* <ConditionalHeader /> */}
           </Suspense>
           <main className="flex-grow">{children}</main>
           <Suspense>
-            <ConditionalFooter />
+            {/* <ConditionalFooter /> */}
           </Suspense>
         </CartProvider>
       </body>

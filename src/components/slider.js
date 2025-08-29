@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import products from '../data/product';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Slider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -31,8 +30,8 @@ const Slider = () => {
         </div>
 
         <div className="md:w-1/2 p-8 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold mb-4">{currentProduct.name}</h2>
-          <p className="text-gray-600 mb-4">{currentProduct.description}</p>
+          <h2 className="text-3xl font-bold mb-4 text-Black-600 ">{currentProduct.name}</h2>
+          <p className="text-Black-600 mb-4">{currentProduct.description}</p>
           <p className="text-xl font-semibold text-gray-800 mb-6">
             ${currentProduct.price.toFixed(2)}
           </p>

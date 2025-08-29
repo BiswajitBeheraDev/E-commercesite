@@ -29,7 +29,7 @@ export function SmallSlider() {
       <div className="p-4 flex flex-col justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-800 mb-1">{currentProduct.name}</h2>
-          <p className="text-sm text-gray-600 line-clamp-3 mb-2">{currentProduct.description}</p>
+          <p className="text-sm text-black-600 line-clamp-3 mb-2">{currentProduct.description}</p>
         </div>
 
         <div className="flex items-center justify-between mt-2">

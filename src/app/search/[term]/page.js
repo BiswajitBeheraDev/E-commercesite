@@ -44,7 +44,7 @@ export default function SearchPage({ params }) {
                   className="w-full h-48 object-cover rounded"
                 />
                 <h2 className="mt-2 font-semibold text-lg">{product.name}</h2>
-                <p className="text-sm text-gray-600">{product.description}</p>
+                <p className="text-sm text-black-600">{product.description}</p>
                 <p className="mt-1 font-bold text-green-700">
                   ${product.price.toFixed(2)}
                 </p>

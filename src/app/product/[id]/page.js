@@ -35,7 +35,7 @@ export default function ProductPage() {
             <p className="text-xl text-green-700 font-semibold mb-4">
               ${product.price}
             </p>
-            <p className="text-gray-700 leading-relaxed">{product.description}</p>
+            <p className="text-white-700 leading-relaxed">{product.description}</p>
           </div>
 
           <button

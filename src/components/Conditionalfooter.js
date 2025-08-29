@@ -1,17 +1,17 @@
-'use client';
+// 'use client';
 
-import { usePathname } from 'next/navigation';
-import Footer from '@/components/Footer';
+// import { usePathname } from 'next/navigation';
+// import Footer from '@/components/Footer';
 
-export default function ConditionalFooter() {
-  const pathname = usePathname();
+// export default function ConditionalFooter() {
+//   const pathname = usePathname();
 
-  const hideFooterPaths = ['/Login', '/signup'];
-  const shouldHideFooter = hideFooterPaths.includes(pathname.toLowerCase());
+//   const hideFooterPaths = ['/Login', '/signup'];
+//   const shouldHideFooter = hideFooterPaths.includes(pathname.toLowerCase());
 
-  if (shouldHideFooter) {
-    return null;
-  }
+//   if (shouldHideFooter) {
+//     return null;
+//   }
 
-  return <Footer />;
-}
+//   return <Footer />;
+// }

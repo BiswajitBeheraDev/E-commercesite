@@ -42,11 +42,7 @@ export default function HeaderContent() {
   }, []);
 
   useEffect(() => {
-    if (!pathname.startsWith('/search')) {
-      setSearchTerm('');
-    }
-
-    // Close mobile dropdowns on route change
+    if (!pathname.startsWith('/search')) setSearchTerm('');
     setMobileStoreOpen(false);
     setMobileProfileOpen(false);
   }, [pathname]);
@@ -88,184 +84,92 @@ export default function HeaderContent() {
 
   return (
     <header className="bg-sky-600 shadow-md relative z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 md:gap-0">
-        <div className="flex items-center justify-between w-full md:space-x-6">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Image src="/logo.jpg" alt="Logo" width={40} height={40} />
-            <span className="text-white text-xl font-bold">MyShop</span>
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3">
+        
+        {/* Logo (Always on top) */}
+        <div className="flex items-center space-x-2">
+          <Image src="/logo.jpg" alt="Logo" width={40} height={40} />
+          <span className="text-white text-xl font-bold">MyShop</span>
+        </div>
+
+        {/* Navigation Row - Home | Store | Cart | Profile */}
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          {/* Home Link */}
+          <Link href="/Herofile" className="text-white hover:text-gray-200 text-sm">
+            Home
+          </Link>
+
+          {/* Store Dropdown (Both Mobile + Desktop) */}
+          <div className="relative">
+            <button
+              onClick={() => setStoreOpen(!storeOpen)}
+              onMouseEnter={() => window.innerWidth >= 768 && setStoreOpen(true)}
+              onMouseLeave={() => window.innerWidth >= 768 && setStoreOpen(false)}
+              className="text-white text-sm"
+            >
+              Store ▾
+            </button>
+
+            {storeOpen && (
+              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.value}
+                    href={`/Catagory/${cat.value}`}
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                    onClick={() => setStoreOpen(false)}
+                  >
+                    {cat.label}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Search (Desktop) */}
-          <form
-            onSubmit={handleSearch}
-            className="hidden md:flex flex-col relative flex-1"
-          >
-            <div className="flex w-2/3 bg-white rounded-full overflow-hidden border border-gray-200 mx-auto">
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={handleChange}
-                className="flex-1 px-4 py-2 text-gray-700 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-yellow-400 px-5 py-2 text-white font-semibold rounded-full hover:bg-yellow-500"
-              >
-                Search
-              </button>
-            </div>
-
-            {suggestions.length > 0 && (
-              <ul className="absolute top-14 w-2/3 mx-auto bg-white border border-gray-300 rounded-md shadow-md z-50">
-                {suggestions.map((product) => (
-                  <li
-                    key={product.id}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                    onClick={() => handleSuggestionClick(product.name)}
-                  >
-                    {product.name}
-                  </li>
-                ))}
-              </ul>
+          {/* Cart Link */}
+          <Link href="/cart" className="relative text-white hover:text-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 1.3a1 1 0 000 1.4L7 17h10l1.3-1.3a1 1 0 000-1.4L17 13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
+            </svg>
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {cart.length}
+              </span>
             )}
-          </form>
+          </Link>
 
-          {/* Right Menu */}
-          <div className="flex items-center space-x-4 relative">
-            <Link href="/Herofile" className="text-white hover:text-gray-200 transition">
-              Home
-            </Link>
-
-            {/* Store Dropdown (Desktop) */}
-            <div
-              className="relative hidden md:block"
-              onMouseEnter={() => setStoreOpen(true)}
-              onMouseLeave={() => setStoreOpen(false)}
+          {/* Profile */}
+          <div className="relative">
+            <button
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="flex items-center text-white text-sm space-x-2"
             >
-              <button className="text-white hover:text-gray-200 transition">
-                Store ▾
-              </button>
-
-              {storeOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
-                  {categories.map((cat) => (
-                    <Link
-                      key={cat.value}
-                      href={`/Catagory/${cat.value}`}
-                      className="block px-4 py-2 text-sm hover:bg-gray-100"
-                    >
-                      {cat.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Store Dropdown (Mobile) */}
-            <div className="md:hidden relative">
-              <button
-                onClick={() => setMobileStoreOpen(!mobileStoreOpen)}
-                className="text-white text-sm px-2 py-1 rounded hover:bg-sky-700"
-              >
-                Store ▾
-              </button>
-              {mobileStoreOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
-                  {categories.map((cat) => (
-                    <Link
-                      key={cat.value}
-                      href={`/Catagory/${cat.value}`}
-                      className="block px-4 py-2 text-sm hover:bg-gray-100"
-                    >
-                      {cat.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Cart */}
-            <Link
-              href="/cart"
-              className="relative text-white hover:text-gray-200 transition"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.3 1.3a1 1 0 000 1.4L7 17h10l1.3-1.3a1 1 0 000-1.4L17 13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" />
-              </svg>
-              {cart.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cart.length}
-                </span>
-              )}
-            </Link>
-
-            {/* Profile Dropdown (Desktop) */}
-            <div
-              className="relative hidden md:block"
-              onMouseEnter={() => setProfileOpen(true)}
-              onMouseLeave={() => setProfileOpen(false)}
-            >
-              <div className="flex items-center space-x-2 cursor-pointer text-white">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  alt="Profile"
-                  width={30}
-                  height={30}
-                  className="rounded-full"
-                />
-                <span className="text-sm">{username}</span>
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                alt="Profile"
+                width={28}
+                height={28}
+                className="rounded-full"
+              />
+              <span>{username}</span>
+            </button>
+            {profileOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50">
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                >
+                  Logout
+                </button>
               </div>
-
-              {profileOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Profile Dropdown (Mobile) */}
-            <div className="md:hidden relative">
-              <button
-                onClick={() => setMobileProfileOpen(!mobileProfileOpen)}
-                className="flex items-center text-white text-sm px-2 py-1 space-x-2"
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  alt="Profile"
-                  width={28}
-                  height={28}
-                  className="rounded-full"
-                />
-                <span>{username}</span>
-              </button>
-              {mobileProfileOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            )}
           </div>
         </div>
 
-        {/* Search (Mobile) */}
-        <form
-          onSubmit={handleSearch}
-          className="flex flex-col relative md:hidden"
-        >
+        {/* Search (All screen sizes) */}
+        <form onSubmit={handleSearch} className="relative w-full">
           <div className="flex w-full bg-white rounded-full overflow-hidden border border-gray-200">
             <input
               type="text"
@@ -276,7 +180,7 @@ export default function HeaderContent() {
             />
             <button
               type="submit"
-              className="bg-yellow-400 px-4 py-2 text-white font-semibold rounded-full hover:bg-yellow-500"
+              className="bg-yellow-400 px-4 py-2 text-white font-semibold hover:bg-yellow-500"
             >
               Search
             </button>
