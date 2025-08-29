@@ -50,7 +50,7 @@ export default function SignUpPage() {
             <input
               type="password"
               id="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -64,7 +64,7 @@ export default function SignUpPage() {
             <input
               type="password"
               id="confirmPassword"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required

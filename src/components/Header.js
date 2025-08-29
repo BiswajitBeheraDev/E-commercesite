@@ -12,8 +12,6 @@ export default function HeaderContent() {
   const [suggestions, setSuggestions] = useState([]);
   const [storeOpen, setStoreOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [mobileStoreOpen, setMobileStoreOpen] = useState(false);
-  const [mobileProfileOpen, setMobileProfileOpen] = useState(false);
   const [username, setUsername] = useState('');
 
   const router = useRouter();
@@ -43,23 +41,18 @@ export default function HeaderContent() {
 
   useEffect(() => {
     if (!pathname.startsWith('/search')) setSearchTerm('');
-    setMobileStoreOpen(false);
-    setMobileProfileOpen(false);
   }, [pathname]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const trimmed = searchTerm.trim();
-    if (trimmed) {
-      router.push(`/search/${encodeURIComponent(trimmed)}`);
-    }
+    if (trimmed) router.push(`/search/${encodeURIComponent(trimmed)}`);
     setSuggestions([]);
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
     if (value.trim().length > 0 && !pathname.startsWith('/search')) {
       const filtered = products.filter((product) =>
         product.name.toLowerCase().includes(value.toLowerCase())
@@ -84,32 +77,63 @@ export default function HeaderContent() {
 
   return (
     <header className="bg-sky-600 shadow-md relative z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         
-        {/* Logo (Always on top) */}
+        {/* Left Section: Logo */}
         <div className="flex items-center space-x-2">
           <Image src="/logo.jpg" alt="Logo" width={40} height={40} />
           <span className="text-white text-xl font-bold">MyShop</span>
         </div>
 
-        {/* Navigation Row - Home | Store | Cart | Profile */}
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          {/* Home Link */}
-          <Link href="/Herofile" className="text-white hover:text-gray-200 text-sm">
+        {/* Middle Section: Search Bar (desktop only) */}
+        <form
+          onSubmit={handleSearch}
+          className="hidden md:flex flex-1 justify-center relative"
+        >
+          <div className="w-full max-w-xl flex bg-white rounded-full overflow-hidden border border-gray-200">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={handleChange}
+              className="flex-1 px-4 py-2 text-gray-700 focus:outline-none text-sm"
+            />
+            <button
+              type="submit"
+              className="bg-yellow-400 px-4 py-2 text-white font-semibold hover:bg-yellow-500"
+            >
+              Search
+            </button>
+          </div>
+
+          {suggestions.length > 0 && (
+            <ul className="absolute top-12 w-full bg-white border border-gray-300 rounded-md shadow-md z-50">
+              {suggestions.map((product) => (
+                <li
+                  key={product.id}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                  onClick={() => handleSuggestionClick(product.name)}
+                >
+                  {product.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </form>
+
+        {/* Right Section: Navigation */}
+        <div className="flex flex-wrap items-center gap-4 text-white text-sm justify-start md:justify-end">
+          <Link href="/Herofile" className="hover:text-gray-200">
             Home
           </Link>
 
-          {/* Store Dropdown (Both Mobile + Desktop) */}
-          <div className="relative">
-            <button
-              onClick={() => setStoreOpen(!storeOpen)}
-              onMouseEnter={() => window.innerWidth >= 768 && setStoreOpen(true)}
-              onMouseLeave={() => window.innerWidth >= 768 && setStoreOpen(false)}
-              className="text-white text-sm"
-            >
-              Store ▾
-            </button>
-
+          {/* Store Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setStoreOpen(true)}
+            onMouseLeave={() => setStoreOpen(false)}
+          >
+            <button className="hover:text-gray-200">Store ▾</button>
             {storeOpen && (
               <div className="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg z-50">
                 {categories.map((cat) => (
@@ -117,7 +141,6 @@ export default function HeaderContent() {
                     key={cat.value}
                     href={`/Catagory/${cat.value}`}
                     className="block px-4 py-2 text-sm hover:bg-gray-100"
-                    onClick={() => setStoreOpen(false)}
                   >
                     {cat.label}
                   </Link>
@@ -126,8 +149,8 @@ export default function HeaderContent() {
             )}
           </div>
 
-          {/* Cart Link */}
-          <Link href="/cart" className="relative text-white hover:text-gray-200">
+          {/* Cart */}
+          <Link href="/cart" className="relative hover:text-gray-200">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
               viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round"
@@ -140,11 +163,11 @@ export default function HeaderContent() {
             )}
           </Link>
 
-          {/* Profile */}
+          {/* Profile Dropdown */}
           <div className="relative">
             <button
               onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center text-white text-sm space-x-2"
+              className="flex items-center space-x-2"
             >
               <img
                 src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
@@ -167,10 +190,12 @@ export default function HeaderContent() {
             )}
           </div>
         </div>
+      </div>
 
-        {/* Search (All screen sizes) */}
-        <form onSubmit={handleSearch} className="relative w-full">
-          <div className="flex w-full bg-white rounded-full overflow-hidden border border-gray-200">
+      {/* Mobile Search Bar (separate row under nav) */}
+      <div className="flex justify-center px-4 mt-2 mb-4 md:hidden">
+        <form onSubmit={handleSearch} className="relative w-full max-w-xl">
+          <div className="flex bg-white rounded-full overflow-hidden border border-gray-200 w-full">
             <input
               type="text"
               placeholder="Search products..."
