@@ -1,7 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ConditionalHeader from "@/components/conditionalHeader";
-import ConditionalFooter from "@/components/Conditionalfooter";
 import { CartProvider } from "@/context/cartcontext";
 import { Suspense } from "react";
 import HeaderContent from "@/components/Header";
@@ -28,6 +26,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
+      
         <CartProvider>
           <Suspense>
             <HeaderContent/>
